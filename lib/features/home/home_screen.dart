@@ -16,7 +16,7 @@ class HomeScreen extends StatelessWidget {
             final users = FirebaseFirestore.instance.collection('users');
             final data = await users.get();
             for (var doc in data.docs) {
-              print(doc.get('test'));
+              print(doc.get('name'));
             }
           },
           child: const Text('Entrar'),
