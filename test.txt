@@ -1,0 +1,31 @@
+Teste de conhecimentos em flutter
+
+Escopo
+
+Eu como usuário, gostaria de criar uma lista, pesquisar por items e editar um item da lista.
+ Critérios de aceitação:
+- Usar o Firestore (Firebase) como banco de dados;
+- Criar indicativo visual ao pesquisar items (loading)
+- O item da lista de tarefa deve armazenar a data de criação/alteração e uma descrição da tarefa;
+- Devo poder excluir um item da lista
+- Devo poder alterar um item da lista
+- Devo poder incluir um item
+
+Entrega
+- Subir o código para um repositório privado no GitHub ou GitLab e enviar o link. Autorizar o e-mail: gustavo.moda@gmail.com para acessar o repositório.
+- Autorizar o email gustavo.moda@gmail.com no app no firebase com acesse ADM
+
+O que será avaliado
+- Organização do projeto (arquivos e diretórios)
+- Documentação README.md com instruções para iniciar o projeto e executar
+- Testes unitários
+- Gerenciador de estado
+- Sistema de rota
+
+
+
+-----
+
+Se tiver qualquer dúvida, pode entrar em contato!
+
+Sobre prazo, se der para fazer até a próxima semana será bem bacana
