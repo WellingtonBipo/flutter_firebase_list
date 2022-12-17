@@ -3,7 +3,7 @@ Teste de conhecimentos em flutter
 Escopo
 
 Eu como usuário, gostaria de criar uma lista, pesquisar por items e editar um item da lista.
- Critérios de aceitação:
+Critérios de aceitação:
 - Usar o Firestore (Firebase) como banco de dados;
 - Criar indicativo visual ao pesquisar items (loading)
 - O item da lista de tarefa deve armazenar a data de criação/alteração e uma descrição da tarefa;
