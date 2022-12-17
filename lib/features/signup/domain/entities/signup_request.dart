@@ -1,16 +1,14 @@
 import 'package:equatable/equatable.dart';
 
 class SignupRequest extends Equatable {
-  final String name;
-  final String email;
-  final String phone;
-
   const SignupRequest({
     required this.name,
     required this.email,
-    required this.phone,
   });
 
+  final String name;
+  final String email;
+
   @override
-  List<Object?> get props => [name, email, phone];
+  List<Object?> get props => [name, email];
 }
