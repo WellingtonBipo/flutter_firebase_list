@@ -19,8 +19,6 @@ class SigninScreen extends StatefulWidget {
 }
 
 class _SigninScreenState extends State<SigninScreen> {
-  final users = ValueNotifier<List<UserInfo>?>(null);
-
   @override
   void initState() {
     super.initState();
@@ -28,26 +26,20 @@ class _SigninScreenState extends State<SigninScreen> {
   }
 
   Future<void> _getUsers() async {
-    final result = await widget.controller.getUsers(
-      onSuccess: (usersInfo) =>
-          users.value = usersInfo..sort((a, b) => a.name.compareTo(b.name)),
-      onUnkownError: (e) {
-        CustomDialogs.showBottonWarning(context, 'Error on get users: $e');
-        users.value = [];
-      },
-    );
-    result();
+    final result = await widget.controller.getUsers();
+    if (result == null) return;
+    CustomDialogs.showBottonWarning(context, 'Error on get users: $result');
   }
 
   Future<void> _onTapUser(UserInfo userInfo) async {
-    Routes.listTasksScreen.push(context, arguments: userInfo);
+    Routes.tasksListScreen.push(context, arguments: userInfo);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: const Text('Signup',
+          title: const Text('Signin',
               style: TextStyle(
                 color: Colors.white,
               ))),
@@ -62,7 +54,7 @@ class _SigninScreenState extends State<SigninScreen> {
             const SizedBox(height: 20),
             Expanded(
               child: ValueListenableBuilder(
-                valueListenable: users,
+                valueListenable: widget.controller.users,
                 builder: (context, value, _) {
                   if (value == null || value.isEmpty) {
                     return Center(

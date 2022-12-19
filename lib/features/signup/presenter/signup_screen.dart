@@ -4,6 +4,7 @@ import 'package:flutter_firebase_list/core/widgets/custom_dialogs.dart';
 import 'package:flutter_firebase_list/core/widgets/custom_elevated_button.dart';
 import 'package:flutter_firebase_list/core/widgets/custom_text_form_field.dart';
 import 'package:flutter_firebase_list/features/signup/presenter/signup_screen_controller.dart';
+import 'package:flutter_firebase_list/routes.dart';
 
 class SignupScreen extends StatelessWidget {
   SignupScreen({
@@ -17,18 +18,19 @@ class SignupScreen extends StatelessWidget {
   final emailField = TextEditingController();
 
   Future<void> _doSignup(BuildContext context) async {
-    CustomDialogs.showLoading(context);
-
     VoidCallback showWarning(String text) {
       return () => CustomDialogs.showBottonWarning(context, text);
     }
+
+    CustomDialogs.showLoading(context);
 
     final result = await controller.signup(
       name: nameField.text,
       email: emailField.text,
       onNameEmpty: showWarning('Name field shold not be empty'),
       onEmailEmpty: showWarning('Email field shold not be empty'),
-      onSuccess: (id) => showWarning('User created => $id')(),
+      onSuccess: (userInfo) =>
+          Routes.tasksListScreen.pushReplacement(context, arguments: userInfo),
       onEmailAlreadyExist: showWarning('Email already exists'),
       onUnkownError: (e) => showWarning('Unknown error => $e')(),
     );

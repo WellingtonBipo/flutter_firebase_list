@@ -6,16 +6,19 @@ class SigninScreenController {
   SigninScreenController(this._getUsers);
 
   final GetUsers _getUsers;
+  final users = ValueNotifier<List<UserInfo>?>(null);
 
-  Future<VoidCallback> getUsers({
-    required void Function(List<UserInfo>) onSuccess,
-    required void Function(Object) onUnkownError,
-  }) async {
+  Future<Object?> getUsers() async {
     final result = await _getUsers();
-
-    return result.fold<VoidCallback>(
-      (left) => () => onSuccess(left),
-      (right) => () => onUnkownError(right),
+    return result.fold<Object?>(
+      (left) {
+        users.value = left..sort((a, b) => a.name.compareTo(b.name));
+        return null;
+      },
+      (right) {
+        users.value = [];
+        return right;
+      },
     );
   }
 }
