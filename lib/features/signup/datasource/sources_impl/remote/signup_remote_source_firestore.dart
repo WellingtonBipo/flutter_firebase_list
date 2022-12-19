@@ -14,6 +14,7 @@ class SignupRemoteSourceFirestore implements SignupRemoteSource {
     final dto = UserFieldsDTO(
       name: data.name,
       email: data.email,
+      tasks: [],
       createdAt: DateTime.now(),
     );
     return FirestoreService.createUserAndReturnId(dto);
