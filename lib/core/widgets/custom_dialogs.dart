@@ -13,12 +13,6 @@ abstract class CustomDialogs {
       );
 
   static void showBottonWarning(BuildContext context, String text) =>
-      // ScaffoldMessenger.of(context).showMaterialBanner(
-      //   MaterialBanner(
-      //     content: Text(text),
-      //     actions: [Text('Ok')],
-      //   ),
-      // );
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(text)),
       );

@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_firebase_list/features/signin/domain/entities/user_id.dart';
+import 'package:flutter_firebase_list/features/signin/domain/usecases/get_users.dart';
+import 'package:flutter_firebase_list/features/signin/presenter/signin_screen.dart';
+import 'package:flutter_firebase_list/features/signin/presenter/signin_screen_controller.dart';
 import 'package:flutter_firebase_list/features/signup/domain/usecases/signup.dart';
 import 'package:flutter_firebase_list/features/signup/presenter/signup_screen.dart';
 import 'package:flutter_firebase_list/features/signup/presenter/signup_screen_controller.dart';
@@ -21,21 +25,29 @@ enum Routes {
         builder: (context) {
           if (name == '/') return const WelcomeScreen();
 
-          // if (name == Routes.signinScreen.name) return _r(const WelcomeScreen());
+          if (name == Routes.signinScreen.name) {
+            final getUsers = Provider.of<GetUsers>(context);
+            return SigninScreen(controller: SigninScreenController(getUsers));
+          }
 
           if (name == Routes.signupScreen.name) {
             final signup = Provider.of<Signup>(context);
             return SignupScreen(controller: SignupScreenController(signup));
           }
 
-          // if (name == Routes.listTasksScreen.name) return _r(const WelcomeScreen());
+          // if (name == Routes.listTasksScreen.name) {
+          //   final signup = Provider.of<Signup>(context);
+          //   return SignupScreen(
+          //       controller: SignupScreenController(
+          //           signup, settings.arguments as UserInfo));
+          // }
 
           throw RouteNotFoundException(settings);
         });
   }
 
-  Future<T?> push<T>(BuildContext context) =>
-      Navigator.of(context).pushNamed<T>(_getRouteName);
+  Future<T?> push<T>(BuildContext context, {Object? arguments}) =>
+      Navigator.of(context).pushNamed<T>(_getRouteName, arguments: arguments);
 }
 
 class RouteNotFoundException {
