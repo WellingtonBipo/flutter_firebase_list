@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase_list/features/signin/domain/entities/user_id.dart';
+import 'package:flutter_firebase_list/features/signin/domain/entities/user_info.dart';
 import 'package:flutter_firebase_list/features/signup/datasource/exceptions/signup_email_already_exists_excpetion.dart';
 import 'package:flutter_firebase_list/features/signup/domain/entities/signup_request.dart';
 import 'package:flutter_firebase_list/features/signup/domain/usecases/signup.dart';

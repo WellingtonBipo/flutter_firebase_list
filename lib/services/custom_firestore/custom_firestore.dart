@@ -1,27 +1,29 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_firebase_list/services/custom_firestore/dtos/task_fields_dto.dart';
 import 'package:flutter_firebase_list/services/custom_firestore/dtos/task_firestore.dart';
 import 'package:flutter_firebase_list/services/custom_firestore/dtos/user_fields_dto.dart';
 import 'package:flutter_firebase_list/services/custom_firestore/dtos/user_info_firestore.dart';
 
 class FirestoreService {
+  static FirebaseFirestore _store = FirebaseFirestore.instance;
+
   static CollectionReference<Map<String, dynamic>> get _usersCollection =>
-      FirebaseFirestore.instance.collection('users');
+      _store.collection('users');
 
   static CollectionReference<Map<String, dynamic>> get _tasksCollection =>
-      FirebaseFirestore.instance.collection('tasks');
+      _store.collection('tasks');
+
+  static Future<UserInfoFirestore> createUser(UserFieldsDTO dto) async {
+    final result = await _usersCollection.add(dto.toMap());
+    return UserInfoFirestore(id: result.id, userFieldsDTO: dto);
+  }
 
   static Future<bool> hasUsersWithEmail(String email) async {
     final usersWithSameEmail = await _usersCollection
         .where(UserFieldsDTO.emailId, isEqualTo: email.trim())
         .get();
     return usersWithSameEmail.docs.isNotEmpty;
-  }
-
-  static Future<UserInfoFirestore> createUserAndReturnId(
-      UserFieldsDTO dto) async {
-    final result = await _usersCollection.add(dto.toMap());
-    return UserInfoFirestore(id: result.id, userFieldsDTO: dto);
   }
 
   static Future<List<UserInfoFirestore>> getUsers() async {
@@ -32,6 +34,16 @@ class FirestoreService {
       users.add(UserInfoFirestore(id: doc.id, userFieldsDTO: userFields));
     }
     return users;
+  }
+
+  static Future<TaskFirestore> createTask(TaskFieldsDTO task) async {
+    final taskCreated = await _tasksCollection.add(task.toMap());
+    final creatorUser = _usersCollection.doc(task.usersIds.first);
+    final creatorUserInfo = await creatorUser.get();
+    final userTasks = creatorUserInfo.get(UserFieldsDTO.tasksId) as List;
+    userTasks.add(taskCreated.id);
+    await creatorUser.update({UserFieldsDTO.tasksId: userTasks});
+    return TaskFirestore(id: taskCreated.id, taskFieldsDTO: task);
   }
 
   static Future<List<TaskFirestore>> getTasks(String userId) async {
@@ -45,16 +57,6 @@ class FirestoreService {
       tasks.add(TaskFirestore(id: doc.id, taskFieldsDTO: userFields));
     }
     return tasks;
-  }
-
-  static Future<String> createTask(TaskFieldsDTO task) async {
-    final taskCreated = await _tasksCollection.add(task.toMap());
-    final creatorUser = _usersCollection.doc(task.usersIds.first);
-    final creatorUserInfo = await creatorUser.get();
-    final userTasks = creatorUserInfo.get(UserFieldsDTO.tasksId) as List;
-    userTasks.add(taskCreated.id);
-    await creatorUser.update({UserFieldsDTO.tasksId: userTasks});
-    return taskCreated.id;
   }
 
   static Future<void> updateTask(TaskFirestore task) async {
@@ -71,4 +73,7 @@ class FirestoreService {
       await user.update({UserFieldsDTO.tasksId: userTasks});
     }
   }
+
+  @visibleForTesting
+  static set instanceForTest(FirebaseFirestore store) => _store = store;
 }

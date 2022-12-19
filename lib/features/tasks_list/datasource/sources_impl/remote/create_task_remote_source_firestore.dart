@@ -10,13 +10,13 @@ class CreateTaskRemoteSourceFirestore implements CreateTaskRemoteSource {
     final taskDTO = TaskFieldsDTO(
       title: taskInfo.title,
       description: taskInfo.description,
-      usersIds: [taskInfo.userId],
+      usersIds: {taskInfo.userId},
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
     );
-    final id = await FirestoreService.createTask(taskDTO);
+    final task = await FirestoreService.createTask(taskDTO);
     return Task(
-      id: id,
+      id: task.id,
       title: taskDTO.title,
       description: taskDTO.description,
       usersIds: taskDTO.usersIds,
