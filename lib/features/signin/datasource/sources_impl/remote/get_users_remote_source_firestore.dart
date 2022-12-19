@@ -5,6 +5,15 @@ import 'package:flutter_firebase_list/services/custom_firestore/custom_firestore
 class GetUsersRemoteSourceFirestore implements GetUsersRemoteSource {
   @override
   Future<List<UserInfo>> getUsers() async {
-    return FirestoreService.getUsers();
+    final data = await FirestoreService.getUsers();
+    return data
+        .map((e) => UserInfo(
+              id: e.id,
+              name: e.userFieldsDTO.name,
+              email: e.userFieldsDTO.email,
+              tasks: e.userFieldsDTO.tasks,
+              createdAt: e.userFieldsDTO.createdAt,
+            ))
+        .toList();
   }
 }

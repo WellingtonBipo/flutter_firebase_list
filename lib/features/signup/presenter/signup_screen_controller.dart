@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_firebase_list/features/signin/domain/entities/user_id.dart';
 import 'package:flutter_firebase_list/features/signup/datasource/exceptions/signup_email_already_exists_excpetion.dart';
 import 'package:flutter_firebase_list/features/signup/domain/entities/signup_request.dart';
 import 'package:flutter_firebase_list/features/signup/domain/usecases/signup.dart';
@@ -13,7 +14,7 @@ class SignupScreenController {
     required String email,
     required VoidCallback onNameEmpty,
     required VoidCallback onEmailEmpty,
-    required void Function(String id) onSuccess,
+    required void Function(UserInfo userInfo) onSuccess,
     required VoidCallback onEmailAlreadyExist,
     required void Function(Object) onUnkownError,
   }) async {
@@ -28,7 +29,7 @@ class SignupScreenController {
     final result = await _signup(request);
 
     return result.fold<VoidCallback>(
-      (left) => () => onSuccess(left.id),
+      (left) => () => onSuccess(left),
       (right) => () {
         if (right is SignupEmailAlreadyExistsExcpetion) {
           return onEmailAlreadyExist();

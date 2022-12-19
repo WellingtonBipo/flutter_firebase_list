@@ -7,7 +7,7 @@ class CustomElevatedButton extends ElevatedButton {
     required String text,
     required super.onPressed,
   }) : super(
-          child: Text(text),
+          child: Text(text, style: const TextStyle(fontSize: 16)),
           style: ElevatedButton.styleFrom(
             minimumSize: const Size(150, 50),
             backgroundColor: CustomColors.grey,
