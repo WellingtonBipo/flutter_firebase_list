@@ -5,6 +5,10 @@ import 'package:flutter_firebase_list/services/custom_firestore/dtos/task_fields
 import 'package:flutter_firebase_list/services/custom_firestore/dtos/task_firestore.dart';
 
 class DeleteTaskRemoteSourceFirestore implements DeleteTaskRemoteSource {
+  DeleteTaskRemoteSourceFirestore([FirestoreService? service])
+      : _service = service ?? FirestoreService();
+
+  final FirestoreService _service;
   @override
   Future<void> deleteTask(Task task) async {
     final data = TaskFirestore(
@@ -16,6 +20,6 @@ class DeleteTaskRemoteSourceFirestore implements DeleteTaskRemoteSource {
           createdAt: task.createdAt,
           updatedAt: task.updatedAt,
         ));
-    await FirestoreService.deleteTask(data);
+    await _service.deleteTask(data);
   }
 }

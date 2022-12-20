@@ -17,7 +17,7 @@ class SignupScreen extends StatelessWidget {
   final nameField = TextEditingController();
   final emailField = TextEditingController();
 
-  Future<void> _doSignup(BuildContext context) async {
+  Future<void> doSignup(BuildContext context) async {
     VoidCallback showWarning(String text) {
       return () => CustomDialogs.showBottonWarning(context, text);
     }
@@ -60,7 +60,7 @@ class SignupScreen extends StatelessWidget {
               Expanded(child: SizedBox.fromSize()),
               CustomElevatedButton(
                 text: 'Signup',
-                onPressed: () => _doSignup(context),
+                onPressed: () => doSignup(context),
               ),
               Expanded(child: SizedBox.fromSize()),
             ],

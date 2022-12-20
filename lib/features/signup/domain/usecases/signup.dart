@@ -13,4 +13,4 @@ class Signup {
       _repository.signup(request);
 }
 
-class SignupException {}
+abstract class SignupException {}

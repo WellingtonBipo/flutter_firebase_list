@@ -25,8 +25,10 @@ void main() {
         updatedAt: DateTime(2000),
       );
 
+  late FirestoreService store;
+
   setUp(() {
-    FirestoreService.instanceForTest = FakeFirebaseFirestore();
+    store = FirestoreService(FakeFirebaseFirestore());
   });
 
   tearDown(() {
@@ -36,7 +38,7 @@ void main() {
   test(
     'When create user, completes with right values',
     () async {
-      final user = await FirestoreService.createUser(userDto);
+      final user = await store.createUser(userDto);
       expect(
           user,
           isA<UserInfoFirestore>()
@@ -48,15 +50,15 @@ void main() {
   test(
     'When there is no email used return false',
     () async {
-      expect(await FirestoreService.hasUsersWithEmail(userDto.email), isFalse);
+      expect(await store.hasUsersWithEmail(userDto.email), isFalse);
     },
   );
 
   test(
     'When there email used return false',
     () async {
-      await FirestoreService.createUser(userDto);
-      expect(await FirestoreService.hasUsersWithEmail(userDto.email), isTrue);
+      await store.createUser(userDto);
+      expect(await store.hasUsersWithEmail(userDto.email), isTrue);
     },
   );
 
@@ -70,10 +72,10 @@ void main() {
         createdAt: DateTime(2001),
       );
 
-      final user = await FirestoreService.createUser(userDto);
-      final user2 = await FirestoreService.createUser(userDto2);
+      final user = await store.createUser(userDto);
+      final user2 = await store.createUser(userDto2);
 
-      final users = await FirestoreService.getUsers();
+      final users = await store.getUsers();
       expect(users, hasLength(2));
       expect(users[0], user);
       expect(users[1], user2);
@@ -83,9 +85,9 @@ void main() {
   test(
     'When create task, completes with right values',
     () async {
-      final user = await FirestoreService.createUser(userDto);
-      final task = await FirestoreService.createTask(taskDto(user.id));
-      final tasks = await FirestoreService.getTasks(user.id);
+      final user = await store.createUser(userDto);
+      final task = await store.createTask(taskDto(user.id));
+      final tasks = await store.getTasks(user.id);
 
       expect(tasks, hasLength(1));
       expect(
@@ -99,9 +101,9 @@ void main() {
   test(
     'When create task, taskId has linked with user',
     () async {
-      final user = await FirestoreService.createUser(userDto);
-      final task = await FirestoreService.createTask(taskDto(user.id));
-      final users = await FirestoreService.getUsers();
+      final user = await store.createUser(userDto);
+      final task = await store.createTask(taskDto(user.id));
+      final users = await store.getUsers();
       final userUpdated = users.first;
 
       expect(userUpdated.userFieldsDTO.tasks, contains(task.id));
@@ -111,8 +113,8 @@ void main() {
   test(
     'When update task, completes with right values',
     () async {
-      final user = await FirestoreService.createUser(userDto);
-      final task = await FirestoreService.createTask(taskDto(user.id));
+      final user = await store.createUser(userDto);
+      final task = await store.createTask(taskDto(user.id));
       final taskUpdated = TaskFirestore(
           id: task.id,
           taskFieldsDTO: TaskFieldsDTO(
@@ -122,8 +124,8 @@ void main() {
             createdAt: task.taskFieldsDTO.createdAt,
             updatedAt: task.taskFieldsDTO.updatedAt,
           ));
-      await FirestoreService.updateTask(taskUpdated);
-      final tasks = await FirestoreService.getTasks(user.id);
+      await store.updateTask(taskUpdated);
+      final tasks = await store.getTasks(user.id);
 
       expect(tasks, hasLength(1));
       expect(
@@ -139,10 +141,10 @@ void main() {
   test(
     'When delete task, completes with no such task',
     () async {
-      final user = await FirestoreService.createUser(userDto);
-      final task = await FirestoreService.createTask(taskDto(user.id));
-      await FirestoreService.deleteTask(task);
-      final tasks = await FirestoreService.getTasks(user.id);
+      final user = await store.createUser(userDto);
+      final task = await store.createTask(taskDto(user.id));
+      await store.deleteTask(task);
+      final tasks = await store.getTasks(user.id);
 
       expect(tasks, hasLength(0));
       expect(tasks.contains(task), isFalse);
@@ -152,10 +154,10 @@ void main() {
   test(
     'When delete task, completes users not having task id anymore',
     () async {
-      final user = await FirestoreService.createUser(userDto);
-      final task = await FirestoreService.createTask(taskDto(user.id));
-      await FirestoreService.deleteTask(task);
-      final users = await FirestoreService.getUsers();
+      final user = await store.createUser(userDto);
+      final task = await store.createTask(taskDto(user.id));
+      await store.deleteTask(task);
+      final users = await store.getUsers();
 
       expect(
           users.any((e) => e.userFieldsDTO.tasks.contains(task.id)), isFalse);

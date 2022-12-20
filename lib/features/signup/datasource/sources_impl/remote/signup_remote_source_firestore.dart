@@ -5,9 +5,14 @@ import 'package:flutter_firebase_list/services/custom_firestore/custom_firestore
 import 'package:flutter_firebase_list/services/custom_firestore/dtos/user_fields_dto.dart';
 
 class SignupRemoteSourceFirestore implements SignupRemoteSource {
+  SignupRemoteSourceFirestore([FirestoreService? service])
+      : service = service ?? FirestoreService();
+
+  final FirestoreService service;
+
   @override
   Future<bool> hasUsersWithEmail(String email) async {
-    return FirestoreService.hasUsersWithEmail(email);
+    return service.hasUsersWithEmail(email);
   }
 
   @override
@@ -18,7 +23,7 @@ class SignupRemoteSourceFirestore implements SignupRemoteSource {
       tasks: const {},
       createdAt: DateTime.now(),
     );
-    final userInfo = await FirestoreService.createUser(dto);
+    final userInfo = await service.createUser(dto);
     return UserInfo(
       id: userInfo.id,
       name: userInfo.userFieldsDTO.name,

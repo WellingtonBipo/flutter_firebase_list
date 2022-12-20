@@ -3,9 +3,14 @@ import 'package:flutter_firebase_list/features/tasks_list/domain/entities/task.d
 import 'package:flutter_firebase_list/services/custom_firestore/custom_firestore.dart';
 
 class GetTasksRemoteSourceFirestore implements GetTasksRemoteSource {
+  GetTasksRemoteSourceFirestore([FirestoreService? service])
+      : _service = service ?? FirestoreService();
+
+  final FirestoreService _service;
+
   @override
   Future<List<Task>> getTasks(String userId) async {
-    final data = await FirestoreService.getTasks(userId);
+    final data = await _service.getTasks(userId);
     return data
         .map((e) => Task(
               id: e.id,

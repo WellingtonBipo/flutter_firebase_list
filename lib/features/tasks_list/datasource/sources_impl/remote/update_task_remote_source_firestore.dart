@@ -5,6 +5,11 @@ import 'package:flutter_firebase_list/services/custom_firestore/dtos/task_fields
 import 'package:flutter_firebase_list/services/custom_firestore/dtos/task_firestore.dart';
 
 class UpdateTaskRemoteSourceFirestore implements UpdateTaskRemoteSource {
+  UpdateTaskRemoteSourceFirestore([FirestoreService? service])
+      : _service = service ?? FirestoreService();
+
+  final FirestoreService _service;
+
   @override
   Future<void> updateTask(Task task) async {
     final data = TaskFirestore(
@@ -16,6 +21,6 @@ class UpdateTaskRemoteSourceFirestore implements UpdateTaskRemoteSource {
           createdAt: task.createdAt,
           updatedAt: task.updatedAt,
         ));
-    await FirestoreService.updateTask(data);
+    await _service.updateTask(data);
   }
 }

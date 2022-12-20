@@ -7,6 +7,7 @@ import 'package:flutter_firebase_list/features/tasks_list/domain/entities/task.d
 abstract class CustomDialogs {
   static void showLoading(BuildContext context) => showDialog(
         context: context,
+        routeSettings: const RouteSettings(name: 'showLoading'),
         barrierDismissible: false,
         builder: (_) => const Center(
             child: SizedBox(
