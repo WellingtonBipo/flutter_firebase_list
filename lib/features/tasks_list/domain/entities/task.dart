@@ -11,7 +11,7 @@ class Task {
   final String id;
   final String title;
   final String description;
-  final List<String> usersIds;
+  final Set<String> usersIds;
   final DateTime createdAt;
   final DateTime updatedAt;
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_list/core/custom_colors.dart';
 import 'package:flutter_firebase_list/core/widgets/custom_dialogs.dart';
-import 'package:flutter_firebase_list/features/signin/domain/entities/user_id.dart';
+import 'package:flutter_firebase_list/features/signin/domain/entities/user_info.dart';
 
 import 'package:flutter_firebase_list/features/signin/presenter/signin_screen_controller.dart';
 import 'package:flutter_firebase_list/routes.dart';

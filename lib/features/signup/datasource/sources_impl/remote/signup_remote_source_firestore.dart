@@ -1,13 +1,18 @@
-import 'package:flutter_firebase_list/features/signin/domain/entities/user_id.dart';
+import 'package:flutter_firebase_list/features/signin/domain/entities/user_info.dart';
 import 'package:flutter_firebase_list/features/signup/datasource/sources/remote/signup_remote_source.dart';
 import 'package:flutter_firebase_list/features/signup/domain/entities/signup_request.dart';
 import 'package:flutter_firebase_list/services/custom_firestore/custom_firestore.dart';
 import 'package:flutter_firebase_list/services/custom_firestore/dtos/user_fields_dto.dart';
 
 class SignupRemoteSourceFirestore implements SignupRemoteSource {
+  SignupRemoteSourceFirestore([FirestoreService? service])
+      : service = service ?? FirestoreService();
+
+  final FirestoreService service;
+
   @override
   Future<bool> hasUsersWithEmail(String email) async {
-    return FirestoreService.hasUsersWithEmail(email);
+    return service.hasUsersWithEmail(email);
   }
 
   @override
@@ -15,10 +20,10 @@ class SignupRemoteSourceFirestore implements SignupRemoteSource {
     final dto = UserFieldsDTO(
       name: data.name,
       email: data.email,
-      tasks: [],
+      tasks: const {},
       createdAt: DateTime.now(),
     );
-    final userInfo = await FirestoreService.createUserAndReturnId(dto);
+    final userInfo = await service.createUser(dto);
     return UserInfo(
       id: userInfo.id,
       name: userInfo.userFieldsDTO.name,

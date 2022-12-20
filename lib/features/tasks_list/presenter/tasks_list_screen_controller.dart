@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase_list/features/signin/domain/entities/user_id.dart';
+import 'package:flutter_firebase_list/features/signin/domain/entities/user_info.dart';
 import 'package:flutter_firebase_list/features/tasks_list/domain/entities/task.dart';
 import 'package:flutter_firebase_list/features/tasks_list/domain/entities/task_info.dart';
 import 'package:flutter_firebase_list/features/tasks_list/domain/usecases/create_task.dart';
